@@ -29,7 +29,6 @@ public class Car implements Serializable {
     @Field(type = FieldType.Float)
     private BigDecimal price;
 
-
     @Field(type = FieldType.Text, fielddata = true)
     private String[] tags;
 

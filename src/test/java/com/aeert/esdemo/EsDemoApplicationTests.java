@@ -53,6 +53,7 @@ class EsDemoApplicationTests {
     @Test
     void page() {
         AggregatedPage page = carService.page("Benz", 0, 10);
+        System.out.println(JSONObject.toJSONString(page.getContent()));
         ParsedStringTerms parsedStringTerms = (ParsedStringTerms) page.getAggregation("group_by_tag");
         List<? extends Terms.Bucket> bucketList = parsedStringTerms.getBuckets();
         bucketList.stream().forEach(m -> {
