@@ -36,6 +36,7 @@ class EsDemoApplicationTests {
                 Arrays.asList(
                         new Car().setId(1L).setName("Benz").setPrice(new BigDecimal(3000000)).setTags(new String[]{"SUV", "Respect"}),
                         new Car().setId(4L).setName("Benz").setPrice(new BigDecimal(400000)).setTags(new String[]{"Sport"}),
+                        new Car().setId(5L).setName("Benz SR").setPrice(new BigDecimal(400000)).setTags(new String[]{"Sport", "Respect"}),
                         new Car().setId(2L).setName("Bmw").setPrice(new BigDecimal(240000)).setTags(new String[]{"Sport"}),
                         new Car().setId(3L).setName("Range Rover").setPrice(new BigDecimal(3500000)).setTags(new String[]{"SUV", "Sport"})
                 )
@@ -57,6 +58,11 @@ class EsDemoApplicationTests {
         bucketList.stream().forEach(m -> {
             System.out.println(JSONObject.toJSONString(m.getAggregations().getAsMap()));
         });
+    }
+
+    @Test
+    void remove() {
+        carService.remove(1L);
     }
 
 }
