@@ -26,7 +26,7 @@ class EsDemoApplicationTests {
 
     @Test
     void save() {
-        Car car = carService.save(new Car().setId(1L).setName("Benz").setPrice(new BigDecimal(3000000)).setTags(new String[]{"SUV", "Respect"}));
+        Car car = carService.save(new Car().setId(1L).setName("Benz").setPrice(new BigDecimal(3000000)).setTags(new String[]{"SUV", "Respect"}).setVersion(1L));
         System.out.println(JSONObject.toJSONString(car));
     }
 

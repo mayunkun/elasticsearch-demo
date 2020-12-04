@@ -2,7 +2,9 @@ package com.aeert.esdemo.bean;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.elasticsearch.index.VersionType;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -17,7 +19,7 @@ import java.math.BigDecimal;
  **/
 @Data
 @Accessors(chain = true)
-@Document(indexName = "vehicle", type = "car", shards = 1, replicas = 1)
+@Document(indexName = "vehicle", type = "car", shards = 1, replicas = 1, versionType = VersionType.EXTERNAL)
 public class Car implements Serializable {
 
     @Id
@@ -31,5 +33,8 @@ public class Car implements Serializable {
 
     @Field(type = FieldType.Text, fielddata = true)
     private String[] tags;
+
+    @Version
+    private Long version;
 
 }

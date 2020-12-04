@@ -1,6 +1,7 @@
 package com.aeert.esdemo.service.impl;
 
 import com.aeert.esdemo.bean.Car;
+import com.aeert.esdemo.dao.CarRepository;
 import com.aeert.esdemo.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -36,22 +37,22 @@ public class CarServiceImpl implements CarService {
 
     private final ElasticsearchRestTemplate elasticsearchRestTemplate;
 
-    private final ElasticsearchRepository elasticsearchRepository;
+    private final CarRepository carRepository;
 
     @Override
     public Car save(Car car) {
-        return (Car) elasticsearchRepository.save(car);
+        return carRepository.save(car);
     }
 
     @Override
     public Boolean batchSave(List<Car> carList) {
-        elasticsearchRepository.saveAll(carList);
+        carRepository.saveAll(carList);
         return Boolean.TRUE;
     }
 
     @Override
     public Car findById(Long id) {
-        return (Car) elasticsearchRepository.findById(id).get();
+        return carRepository.findById(id).get();
     }
 
     @Override
@@ -78,12 +79,12 @@ public class CarServiceImpl implements CarService {
                 .addAggregation(builder)
                 .withPageable(pageable)
                 .build();
-        return (AggregatedPage) elasticsearchRepository.search(query);
+        return (AggregatedPage) carRepository.search(query);
     }
 
     @Override
     public Boolean remove(Long id) {
-        elasticsearchRepository.deleteById(id);
+        carRepository.deleteById(id);
         return Boolean.TRUE;
     }
 
