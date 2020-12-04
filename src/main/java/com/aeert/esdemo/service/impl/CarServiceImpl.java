@@ -4,6 +4,7 @@ import com.aeert.esdemo.bean.Car;
 import com.aeert.esdemo.dao.CarRepository;
 import com.aeert.esdemo.service.CarService;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -50,10 +51,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Boolean update(Car car) {
+    public DocWriteResponse.Result update(Car car) {
         UpdateResponse updateResponse = elasticsearchRestTemplate.update(
                 new UpdateQueryBuilder()
                         .withId(String.valueOf(car.getId()))
+                        // 不加默认false。true表示更新时不存在就插入
                         .withDoUpsert(true)
                         .withClass(Car.class)
                         .withUpdateRequest(new UpdateRequest()
@@ -64,8 +66,7 @@ public class CarServiceImpl implements CarService {
                         )
                         .build()
         );
-        System.out.println(updateResponse.getResult());
-        return Boolean.TRUE;
+        return updateResponse.getResult();
     }
 
     @Override

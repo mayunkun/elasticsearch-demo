@@ -1,6 +1,7 @@
 package com.aeert.esdemo.service;
 
 import com.aeert.esdemo.bean.Car;
+import org.elasticsearch.action.DocWriteResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 
@@ -21,7 +22,7 @@ public interface CarService {
     /**
      * 局部更新
      **/
-    public Boolean update(Car car);
+    public DocWriteResponse.Result update(Car car);
 
     /**
      * 新增、编辑

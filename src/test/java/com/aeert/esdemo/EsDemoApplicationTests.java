@@ -4,6 +4,7 @@ import com.aeert.esdemo.bean.Car;
 import com.aeert.esdemo.service.CarService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
@@ -46,7 +47,7 @@ class EsDemoApplicationTests {
 
     @Test
     void update() {
-        Boolean result = carService.update(new Car().setId(1L).setName("Benz1").setPrice(new BigDecimal("25")));
+        DocWriteResponse.Result result = carService.update(new Car().setId(1L).setName("Benz").setPrice(new BigDecimal("250000")));
         System.out.println(result);
     }
 
