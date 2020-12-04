@@ -14,9 +14,14 @@ import java.util.List;
 public interface CarService {
 
     /**
-     * 新增、编辑
+     * 新增
      **/
     public Car save(Car car);
+
+    /**
+     * 编辑
+     **/
+    public Boolean update(Car car);
 
     /**
      * 新增、编辑
@@ -39,5 +44,10 @@ public interface CarService {
      * 删除
      **/
     public Boolean remove(Long id);
+
+    /**
+     * findByName
+     **/
+    public Page<Car> findByName(String name, Integer page, Integer size);
 
 }

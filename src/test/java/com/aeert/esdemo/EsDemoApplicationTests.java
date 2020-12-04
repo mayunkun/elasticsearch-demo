@@ -46,8 +46,8 @@ class EsDemoApplicationTests {
 
     @Test
     void update() {
-        Car car = carService.save(new Car().setId(1L).setName("Benz1"));
-        System.out.println(JSONObject.toJSONString(car));
+        Boolean result = carService.update(new Car().setId(1L).setName("Benz1").setPrice(new BigDecimal("25")));
+        System.out.println(result);
     }
 
     @Test
@@ -64,6 +64,12 @@ class EsDemoApplicationTests {
     @Test
     void remove() {
         carService.remove(1L);
+    }
+
+    @Test
+    void findByName() {
+        Page<Car> carPage = carService.findByName("Benz", 0, 10);
+        System.out.println(JSONObject.toJSONString(carPage));
     }
 
 }

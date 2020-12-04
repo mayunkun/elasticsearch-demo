@@ -4,6 +4,8 @@ import com.aeert.esdemo.bean.Car;
 import com.aeert.esdemo.dao.CarRepository;
 import com.aeert.esdemo.service.CarService;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -14,17 +16,20 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author l'amour solitaire
@@ -42,6 +47,25 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car save(Car car) {
         return carRepository.save(car);
+    }
+
+    @Override
+    public Boolean update(Car car) {
+        UpdateResponse updateResponse = elasticsearchRestTemplate.update(
+                new UpdateQueryBuilder()
+                        .withId(String.valueOf(car.getId()))
+                        .withDoUpsert(true)
+                        .withClass(Car.class)
+                        .withUpdateRequest(new UpdateRequest()
+                                .doc(new HashMap<String, Object>(4) {{
+                                    put("name", car.getName());
+                                    put("price", car.getPrice());
+                                }})
+                        )
+                        .build()
+        );
+        System.out.println(updateResponse.getResult());
+        return Boolean.TRUE;
     }
 
     @Override
@@ -88,4 +112,8 @@ public class CarServiceImpl implements CarService {
         return Boolean.TRUE;
     }
 
+    @Override
+    public Page<Car> findByName(String name, Integer page, Integer size) {
+        return carRepository.findByName(name, PageRequest.of(page, size));
+    }
 }
