@@ -40,6 +40,12 @@ public interface CarService {
      * @return
      */
     public AggregatedPage page(String name, Integer page, Integer size);
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public AggregatedPage pageWithHighlight(String name, Integer page, Integer size);
 
     /**
      * 删除

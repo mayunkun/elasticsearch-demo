@@ -47,13 +47,24 @@ class EsDemoApplicationTests {
 
     @Test
     void update() {
-        DocWriteResponse.Result result = carService.update(new Car().setId(1L).setName("Benz").setPrice(new BigDecimal("250000")));
+        DocWriteResponse.Result result = carService.update(new Car().setId(1L).setName("Benz6123").setPrice(new BigDecimal("450000")).setVersion(1L));
         System.out.println(result);
     }
 
     @Test
     void page() {
         AggregatedPage page = carService.page("Benz", 0, 10);
+        System.out.println(JSONObject.toJSONString(page.getContent()));
+        ParsedStringTerms parsedStringTerms = (ParsedStringTerms) page.getAggregation("group_by_tag");
+        List<? extends Terms.Bucket> bucketList = parsedStringTerms.getBuckets();
+        bucketList.stream().forEach(m -> {
+            System.out.println(JSONObject.toJSONString(m.getAggregations().getAsMap()));
+        });
+    }
+
+    @Test
+    void pageWithHighlight() {
+        AggregatedPage page = carService.pageWithHighlight("Bmw", 0, 10);
         System.out.println(JSONObject.toJSONString(page.getContent()));
         ParsedStringTerms parsedStringTerms = (ParsedStringTerms) page.getAggregation("group_by_tag");
         List<? extends Terms.Bucket> bucketList = parsedStringTerms.getBuckets();
