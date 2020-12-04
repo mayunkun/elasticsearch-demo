@@ -14,12 +14,12 @@ import java.util.List;
 public interface CarService {
 
     /**
-     * 新增
+     * 新增、覆盖更新
      **/
     public Car save(Car car);
 
     /**
-     * 编辑
+     * 局部更新
      **/
     public Boolean update(Car car);
 
