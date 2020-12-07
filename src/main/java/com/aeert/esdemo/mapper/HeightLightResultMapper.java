@@ -16,7 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class HightLightResultMapper implements SearchResultMapper {
+/**
+ * @Author l'amour solitaire
+ * @Description HeightLightResultMapper
+ * @Date 2020/12/7 上午8:45
+ **/
+public class HeightLightResultMapper implements SearchResultMapper {
 
     @Override
     public <T> AggregatedPage<T> mapResults(SearchResponse searchResponse, Class<T> clazz, Pageable pageable) {

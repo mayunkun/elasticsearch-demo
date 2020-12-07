@@ -2,24 +2,19 @@ package com.aeert.esdemo.service.impl;
 
 import com.aeert.esdemo.bean.Car;
 import com.aeert.esdemo.dao.CarRepository;
-import com.aeert.esdemo.mapper.HightLightResultMapper;
+import com.aeert.esdemo.mapper.HeightLightResultMapper;
 import com.aeert.esdemo.service.CarService;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.action.DocWriteResponse;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.avg.AvgAggregationBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -28,15 +23,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
-import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
@@ -119,7 +114,7 @@ public class CarServiceImpl implements CarService {
     public AggregatedPage pageWithHighlight(String name, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        String preTag = "<font color='#dd4b39'>";//google的色值
+        String preTag = "<font color='#dd4b39'>";
         String postTag = "</font>";
 
         SearchQuery searchQuery = new NativeSearchQueryBuilder().
@@ -127,11 +122,8 @@ public class CarServiceImpl implements CarService {
                 withHighlightFields(new HighlightBuilder.Field("name").preTags(preTag).postTags(postTag)).build();
         searchQuery.setPageable(pageable);
 
-        // 不需要高亮直接return ideas
-        // AggregatedPage<Idea> ideas = elasticsearchTemplate.queryForPage(searchQuery, Idea.class);
-
         // 高亮字段
-        AggregatedPage<Car> carAggregatedPage = elasticsearchRestTemplate.queryForPage(searchQuery, Car.class, new HightLightResultMapper());
+        AggregatedPage<Car> carAggregatedPage = elasticsearchRestTemplate.queryForPage(searchQuery, Car.class, new HeightLightResultMapper());
         return carAggregatedPage;
     }
 
